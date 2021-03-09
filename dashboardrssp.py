@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
@@ -15,24 +9,12 @@ import plotly.graph_objects as go
 import plotly.express as px 
 from sqlalchemy import create_engine
 
-
-# In[ ]:
-
-
 con = create_engine("postgres://ptivzjrbexcqrd:7c1a0c9ea6b72bafb091664f01a7b26ddadd3b2e35e7e0d14a28a7536e7b9ff8@ec2-54-155-35-88.eu-west-1.compute.amazonaws.com:5432/de9ca2ec3ia53s")
-
-
-# In[ ]:
-
 
 qg = "select date,value,parameter,year,station from geo_tbl ;"
 qm = "select date,value,parameter,year,station from mag_tbl ;"
 qr = "select date,value,parameter,year,station from rad_tbl ;"
 qw = "select date,value,parameter,year,station from wat_tbl ;"
-
-
-# In[ ]:
-
 
 dg = pd.read_sql(qg, con)
 dg['date'] = pd.to_datetime(dg['date'],format='%m/%d/%y')
@@ -55,10 +37,6 @@ dg['station']=dg['station'].astype('string')
 dg['period'] = dg['Month'] + dg['Days']
 dg.head()
 
-
-# In[ ]:
-
-
 dm = pd.read_sql(qm, con)
 dm['date'] = pd.to_datetime(dm['date'],format='%m/%d/%y')
 
@@ -77,10 +55,6 @@ dm['station']=dm['station'].astype('string')
 
 dm['period'] = dm['Month'] + dm['Days']
 dm.head()
-
-
-# In[ ]:
-
 
 dr = pd.read_sql(qr, con)
 dr['date'] = pd.to_datetime(dr['date'],format='%m/%d/%y')
@@ -101,10 +75,6 @@ dr['station']=dr['station'].astype('string')
 dr['period'] = dr['Month'] + dr['Days']
 dr.head()
 
-
-# In[ ]:
-
-
 dw = pd.read_sql(qw, con)
 dw['date'] = pd.to_datetime(dw['date'],format='%m/%d/%y')
 
@@ -124,31 +94,11 @@ dw['station']=dw['station'].astype('string')
 dw['period'] = dw['Month'] + dw['Days']
 dw.head()
 
-
-# In[ ]:
-
-
 mov_avg = [2,3,4,5,6,7,8,9,10]
 grph_mode = ['Continuous' , 'By year']
 
-
-# In[ ]:
-
-
 app = dash.Dash(__name__ , external_stylesheets = [dbc.themes.FLATLY])
 server = app.server
-
-
-# In[ ]:
-
-
-auth = dash_auth.BasicAuth(
-app,
-    {'G11':'Gowtham11'})
-
-
-# In[ ]:
-
 
 controls1 = dbc.Card(
     [
@@ -229,10 +179,6 @@ controls1 = dbc.Card(
     color="light",outline=True,style={"box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2)"},
     body=True
 )
-
-
-# In[ ]:
-
 
 controls2 = dbc.Card(
     [
@@ -400,9 +346,6 @@ controls3 = dbc.Card(
 )
 
 
-# In[ ]:
-
-
 controls4 = dbc.Card(
     [
         #dbc.CardHeader(" "),
@@ -481,10 +424,6 @@ controls4 = dbc.Card(
     color="light",outline=True,style={"box-shadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2)"},
     body=True
 )
-
-
-# In[ ]:
-
 
 app.layout = dbc.Container(
     [
@@ -605,10 +544,6 @@ app.layout = dbc.Container(
     fluid=True,
 )
 
-
-# In[ ]:
-
-
 @app.callback(Output('l1', 'figure'),
              [Input('date-picker1' , 'start_date'),
               Input('date-picker1' , 'end_date'),
@@ -685,10 +620,6 @@ def update_graph1(start_date , end_date , select_station , select_parameter , se
     
     return figure
 
-
-# In[ ]:
-
-
 @app.callback(Output('l2', 'figure'),
              [Input('date-picker2' , 'start_date'),
               Input('date-picker2' , 'end_date'),
@@ -763,10 +694,6 @@ def update_graph2(start_date , end_date , select_station2 ,select_parameter2 , s
         return figure
     
     return figure
-
-
-# In[ ]:
-
 
 @app.callback(Output('l3', 'figure'),
              [Input('date-picker3' , 'start_date'),
@@ -921,10 +848,6 @@ def update_graph4(start_date , end_date , select_station4 ,select_parameter4 , s
         return figure
     
     return figure
-
-
-# In[ ]:
-
 
 if __name__ == '__main__':
     app.run_server(debug = False)
