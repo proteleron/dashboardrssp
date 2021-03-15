@@ -1,1 +1,1 @@
-web: gunicorn dashboardrssp:server --preload
+web: gunicorn dashboardrssp:server
